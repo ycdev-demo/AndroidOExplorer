@@ -1,10 +1,10 @@
 package me.ycdev.android.demo.oexplorer;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
-import android.support.design.widget.Snackbar;
-import android.view.View;
 import android.support.design.widget.NavigationView;
+import android.support.design.widget.Snackbar;
 import android.support.v4.view.GravityCompat;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarDrawerToggle;
@@ -12,6 +12,9 @@ import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.View;
+
+import me.ycdev.android.demo.oexlporer.common.CommonConstants;
 
 public class MainActivity extends AppCompatActivity
         implements NavigationView.OnNavigationItemSelectedListener {
@@ -27,8 +30,7 @@ public class MainActivity extends AppCompatActivity
         fab.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Snackbar.make(view, "Replace with your own action", Snackbar.LENGTH_LONG)
-                        .setAction("Action", null).show();
+                sendBroadcasts();
             }
         });
 
@@ -40,6 +42,29 @@ public class MainActivity extends AppCompatActivity
 
         NavigationView navigationView = (NavigationView) findViewById(R.id.nav_view);
         navigationView.setNavigationItemSelectedListener(this);
+    }
+
+    private void sendBroadcasts() {
+        Intent intent = new Intent(CommonConstants.ACTION_APP1_TEST_SELF);
+        intent.setPackage(getPackageName());
+        sendBroadcast(intent);
+
+        intent = new Intent(CommonConstants.ACTION_APP1_TEST_NORMAL);
+        sendBroadcast(intent);
+
+        intent = new Intent(CommonConstants.ACTION_APP1_TEST_PERM_NORMAL);
+        sendBroadcast(intent, CommonConstants.PERM_NORMAL);
+
+        intent = new Intent(CommonConstants.ACTION_APP1_TEST_PERM_SIGN);
+        sendBroadcast(intent, CommonConstants.PERM_SIGN);
+
+        intent = new Intent(CommonConstants.ACTION_APP1_TEST_PERM_SIGN_OR_SYSTEM);
+        sendBroadcast(intent, CommonConstants.PERM_SIGN_OR_SYSTEM);
+    }
+
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
     }
 
     @Override

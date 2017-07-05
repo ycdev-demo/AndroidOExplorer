@@ -1,8 +1,28 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
     package="me.ycdev.android.demo.oexplorer">
 
+    <permission
+        android:name="me.ycdev.android.demo.oexplorer.perm.NORMAL"
+        android:description="@string/perm_desc_normal"
+        android:protectionLevel="normal" />
+    <permission
+        android:name="me.ycdev.android.demo.oexplorer.perm.SIGN"
+        android:description="@string/perm_desc_sign"
+        android:protectionLevel="signature" />
+    <permission
+        android:name="me.ycdev.android.demo.oexplorer.perm.SIGN_OR_SYSTEM"
+        android:description="@string/perm_desc_sign_or_system"
+        android:protectionLevel="signatureOrSystem"
+        tools:ignore="SignatureOrSystemPermissions" />
+
+    <uses-permission android:name="me.ycdev.android.demo.oexplorer.perm.NORMAL" />
+    <uses-permission android:name="me.ycdev.android.demo.oexplorer.perm.SIGN" />
+    <uses-permission android:name="me.ycdev.android.demo.oexplorer.perm.SIGN_OR_SYSTEM" />
+
     <application
+        android:name=".App"
         android:allowBackup="true"
         android:icon="@mipmap/ic_launcher"
         android:label="@string/app_name"
@@ -19,6 +39,25 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
+
+        <receiver android:name=".receiver.StaticReceiver">
+            <intent-filter>
+                <action android:name="android.intent.action.ACTION_POWER_CONNECTED" />
+                <action android:name="android.intent.action.MY_PACKAGE_REPLACED" />
+
+                <action android:name="me.ycdev.android.demo.oexplorer.action.APP1_TEST_NORMAL" />
+                <action android:name="me.ycdev.android.demo.oexplorer.action.APP1_TEST_SELF" />
+                <action android:name="me.ycdev.android.demo.oexplorer.action.APP1_TEST_PERM_NORMAL" />
+                <action android:name="me.ycdev.android.demo.oexplorer.action.APP1_TEST_PERM_SIGN" />
+                <action android:name="me.ycdev.android.demo.oexplorer.action.APP1_TEST_PERM_SIGN_OR_SYSTEM" />
+
+                <action android:name="me.ycdev.android.demo.oexplorer.action.APP2_TEST_TARGET" />
+                <action android:name="me.ycdev.android.demo.oexplorer.action.APP2_TEST_NORMAL" />
+                <action android:name="me.ycdev.android.demo.oexplorer.action.APP2_TEST_PERM_NORMAL" />
+                <action android:name="me.ycdev.android.demo.oexplorer.action.APP2_TEST_PERM_SIGN" />
+                <action android:name="me.ycdev.android.demo.oexplorer.action.APP2_TEST_PERM_SIGN_OR_SYSTEM" />
+            </intent-filter>
+        </receiver>
     </application>
 
 </manifest>
