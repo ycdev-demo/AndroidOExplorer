@@ -1,10 +1,14 @@
 package me.ycdev.android.demo.oexplorer;
 
+import android.annotation.TargetApi;
+import android.app.Notification;
+import android.app.NotificationManager;
+import android.app.PendingIntent;
 import android.content.Intent;
+import android.os.Build;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.NavigationView;
-import android.support.design.widget.Snackbar;
 import android.support.v4.view.GravityCompat;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarDrawerToggle;
@@ -14,10 +18,13 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 
+import me.ycdev.android.arch.utils.AppLogger;
 import me.ycdev.android.demo.oexlporer.common.CommonConstants;
+import me.ycdev.android.demo.oexplorer.service.BackgroundService;
 
 public class MainActivity extends AppCompatActivity
         implements NavigationView.OnNavigationItemSelectedListener {
+    private static final String TAG = "MainActivity";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -93,10 +100,36 @@ public class MainActivity extends AppCompatActivity
 
         //noinspection SimplifiableIfStatement
         if (id == R.id.action_settings) {
+            testBackgroundService();
             return true;
         }
 
         return super.onOptionsItemSelected(item);
+    }
+
+    @TargetApi(Build.VERSION_CODES.O)
+    private void testBackgroundService() {
+        AppLogger.d(TAG, "test background service");
+        if (Build.VERSION.SDK_INT < Build.VERSION_CODES.O) {
+            return;
+        }
+
+        Intent intent = new Intent(this, BackgroundService.class);
+        startService(intent);
+
+        PendingIntent pi = PendingIntent.getService(this, 0, intent, PendingIntent.FLAG_UPDATE_CURRENT);
+
+        Notification notification = new Notification.Builder(this, Constants.NOTIFICATION_CHANNEL_ID_TEST)
+                .setSmallIcon(R.mipmap.ic_launcher)
+                .setTicker("TestTicker")
+                .setContentTitle("TestTitle")
+                .setContentText("TestText")
+                .setContentIntent(pi)
+                .setAutoCancel(true)
+                .build();
+
+        NotificationManager nm = getSystemService(NotificationManager.class);
+        nm.notify(Constants.NOTIFICATION_ID_BKG_SERVICE, notification);
     }
 
     @SuppressWarnings("StatementWithEmptyBody")

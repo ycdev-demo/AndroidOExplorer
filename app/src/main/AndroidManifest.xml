@@ -58,6 +58,8 @@
                 <action android:name="me.ycdev.android.demo.oexplorer.action.APP2_TEST_PERM_SIGN_OR_SYSTEM" />
             </intent-filter>
         </receiver>
+
+        <service android:name=".service.BackgroundService" />
     </application>
 
 </manifest>

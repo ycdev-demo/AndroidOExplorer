@@ -19,6 +19,7 @@ public class StaticReceiver extends BroadcastReceiver {
         AppLogger.i(TAG, "Device SDK: %d, app target SDK: %d", Build.VERSION.SDK_INT,
                 appTargetSdk);
 
+        // all the following broadcast behavior confirmed
         String action = intent.getAction();
         if (Intent.ACTION_POWER_CONNECTED.equals(action)
                 || CommonConstants.ACTION_APP1_TEST_NORMAL.equals(action)
